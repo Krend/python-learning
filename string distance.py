@@ -1,16 +1,27 @@
 import random
 import string
 import time
+import psutil
 
-class Evolve:
+iCount = 100
+
+class StringEvolution:
     def  __init__(self, sBase):
         self.sBase = sBase
         self.sShuffle =''
+        self.arrS = ['' for x in range(iCount)]
+        self.arrD = [100 for x in range(iCount)]
+        self.sLen = len(sBase)
+        self.iGen = 0
+        self.iMinDist = 0
+        
 
-    def GenShuffle(self):
+    def Shuffle(self):
         self.sShuffle=''
         for i in self.sBase:
             self.sShuffle += random.choice(string.ascii_letters)
+        for i in range(iCount):
+            self.arrS[i] = self.sShuffle
 
     def f(self):
         return self.sBase
@@ -46,23 +57,63 @@ class Evolve:
 
     def hamdist(self, s1, s2):
         return sum(el1 != el2 for el1, el2 in zip(s1, s2))
+
+    def evolve(self, s):
+        #iRandAmount = random.randint(1, self.sLen)
+        sOut = ''
+        for i in s:
+            iRand = random.randint(0, 100)
+            if iRand == 0:
+                sOut += random.choice(string.ascii_letters)
+            else:
+                sOut +=i
+        return sOut
+
+    def evolveAll(self):
+        iMinInd =0
+        iMin = 10000
+        for i in range(iCount):
+            self.arrS[i] = self.evolve(self.arrS[i])
+            self.arrD[i] = self.hamdist(self.sBase, self.arrS[i])
+            if self.arrD[i] < iMin:
+                iMin = self.arrD[i]
+                iMinInd = i
+        return iMinInd
+
+    def nextGen(self, iBase):
+        for i in range(iCount):
+            self.arrS[i] = self.arrS[iBase]
+        if self.iMinDist > self.arrD[iBase] or self.iGen == 0:
+            self.iMinDist = self.arrD[iBase]
+            print('Generation: ', self.iGen,' best: ',self.arrS[iBase],'distance: ',self.arrD[iBase])
+        self.iGen += 1
     
 
-x= Evolve('Hello, world!')
-x.GenShuffle()
-a = x.f()
-b = x.f2()
-print(a)
-print(b)
-c = x.levdistI(a,b)
-print(c)
-d = x.hamdist(a,b)
-print(d)
+x= StringEvolution('LetsTrySomeLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongStringLongerThanThisForSure')
+x.Shuffle()
+x.iMinDist = x.hamdist(x.sBase, x.sShuffle)
+#a = x.f()
+#b = x.f2()
+print(x.f())
+print(x.f2())
+#c = x.levdistI(a,b)
+#print(c)
+#d = x.hamdist(a,b)
+#print(d)
 start_time = time.time()
-for i in range(1000):
-    x.GenShuffle()
-    b = x.f2()
-    print(b)
-    c = x.levdistI(a,b)
-    print(c)
+#for i in range(1000):
+#    x.GenShuffle()
+#    b = x.f2()
+#    print(b)
+#    c = x.levdistI(a,b)
+#    print(c)
+#s = x.evolve(x.f())
+print(min(x.arrD)) 
+while min(x.arrD) != 0:
+    iInd = x.evolveAll()
+    #print(iInd)
+    #print(x.arrS[iInd])
+    #print(x.arrD[iInd])
+    x.nextGen(iInd)
+
 print("--- %s seconds ---" % (time.time() - start_time))
