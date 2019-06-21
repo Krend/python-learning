@@ -3,7 +3,7 @@ import string
 import time
 import psutil
 
-iCount = 100
+iCount = 1000
 
 class StringEvolution:
     def  __init__(self, sBase):
@@ -19,7 +19,7 @@ class StringEvolution:
     def Shuffle(self):
         self.sShuffle=''
         for i in self.sBase:
-            self.sShuffle += random.choice(string.ascii_letters)
+            self.sShuffle += random.choice(string.printable)
         for i in range(iCount):
             self.arrS[i] = self.sShuffle
 
@@ -64,7 +64,7 @@ class StringEvolution:
         for i in s:
             iRand = random.randint(0, 100)
             if iRand == 0:
-                sOut += random.choice(string.ascii_letters)
+                sOut += random.choice(string.printable)
             else:
                 sOut +=i
         return sOut
@@ -85,11 +85,12 @@ class StringEvolution:
             self.arrS[i] = self.arrS[iBase]
         if self.iMinDist > self.arrD[iBase] or self.iGen == 0:
             self.iMinDist = self.arrD[iBase]
-            print('Generation: ', self.iGen,' best: ',self.arrS[iBase],'distance: ',self.arrD[iBase])
+            print('Generation: ', self.iGen,' distance: ',self.arrD[iBase],' best: ',self.arrS[iBase])
         self.iGen += 1
-    
 
-x= StringEvolution('LetsTrySomeLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongStringLongerThanThisForSure')
+#x= StringEvolution('LetsTrySomeLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongStringLongerThanThisForSurePlusOne')
+x= StringEvolution('Hello World!')
+#x= StringEvolution(string.printable)
 x.Shuffle()
 x.iMinDist = x.hamdist(x.sBase, x.sShuffle)
 #a = x.f()
