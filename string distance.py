@@ -88,33 +88,18 @@ class StringEvolution:
             print('Generation: ', self.iGen,' distance: ',self.arrD[iBase],' best: ',self.arrS[iBase])
         self.iGen += 1
 
-#x= StringEvolution('LetsTrySomeLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongStringLongerThanThisForSurePlusOne')
-x= StringEvolution('Hello World!')
-#x= StringEvolution(string.printable)
+#x= StringEvolution('Hello World!')
+x= StringEvolution(string.printable)
 x.Shuffle()
 x.iMinDist = x.hamdist(x.sBase, x.sShuffle)
-#a = x.f()
-#b = x.f2()
 print(x.f())
 print(x.f2())
-#c = x.levdistI(a,b)
-#print(c)
-#d = x.hamdist(a,b)
-#print(d)
+
 start_time = time.time()
-#for i in range(1000):
-#    x.GenShuffle()
-#    b = x.f2()
-#    print(b)
-#    c = x.levdistI(a,b)
-#    print(c)
-#s = x.evolve(x.f())
+
 print(min(x.arrD)) 
 while min(x.arrD) != 0:
     iInd = x.evolveAll()
-    #print(iInd)
-    #print(x.arrS[iInd])
-    #print(x.arrD[iInd])
     x.nextGen(iInd)
 
 print("--- %s seconds ---" % (time.time() - start_time))
